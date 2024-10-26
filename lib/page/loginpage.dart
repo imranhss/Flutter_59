@@ -1,11 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:test_flutter/page/homepage.dart';
 import 'package:test_flutter/page/registrationpage.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:jwt_decode/jwt_decode.dart';
 
 class LoginPage extends StatelessWidget {
 
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final storage = new FlutterSecureStorage();
+
+
+
+
+  Future<void> loginUser(BuildContext context) async {
+    final url = Uri.parse('http://localhost:8080/login');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email.text, 'password': password.text}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final token = responseData['token'];
+
+      // Decode JWT to get 'sub' and 'role'
+      Map<String, dynamic> payload = Jwt.parseJwt(token);
+      String sub = payload['sub'];
+      String role = payload['role'];
+
+      // Store token, sub, and role securely
+      await storage.write(key: 'token', value: token);
+      await storage.write(key: 'sub', value: sub);
+      await storage.write(key: 'role', value: role);
+
+      print('Login successful. Sub: $sub, Role: $role');
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+
+    } else {
+      print('Login failed with status: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +82,8 @@ class LoginPage extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                String em = email.text;
-                String pass = password.text;
-                print('Email: $em, Password: $pass');
+                  loginUser(context);
+
 
                 },
                 child: Text(

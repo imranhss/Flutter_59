@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/all_hotel_view_page.dart';
 import 'package:test_flutter/page/loginpage.dart';
 
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage()
+      home: AllHotelViewPage()
     );
   }
 }

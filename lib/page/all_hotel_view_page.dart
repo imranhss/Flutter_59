@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/model/hotel.dart';
+import 'package:test_flutter/page/room_details_page.dart';
 import 'package:test_flutter/service/hotel_service.dart';
 
 class AllHotelViewPage extends StatefulWidget {
@@ -56,8 +57,19 @@ class _AllHotelViewPageState extends State<AllHotelViewPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: Implement booking functionality or navigate to a booking page
-                            print('Book Now clicked for hotel: ${hotel.name}');
+                            if (hotel.id != null) { // Ensure hotel.id is not null
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RoomDetailsPage(hotel: hotel), // Pass the hotel to RoomDetailsPage
+                                ),
+                              );
+                            } else {
+                              // Handle the case where hotel.id is null
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Hotel ID is missing. Cannot load rooms.')),
+                              );
+                            }
                           },
                           child: Text('View Room'),
                           style: ElevatedButton.styleFrom(),

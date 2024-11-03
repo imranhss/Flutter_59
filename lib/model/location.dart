@@ -19,4 +19,6 @@ class Location {
     data['image'] = this.image;
     return data;
   }
+
+
 }

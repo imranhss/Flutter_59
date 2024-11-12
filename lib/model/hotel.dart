@@ -1,4 +1,4 @@
-import 'package:test_flutter/model/location.dart';
+import 'package:test_flutter/model/Location.dart';
 
 
 

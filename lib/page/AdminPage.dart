@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/page/AddHotelPage.dart';
+import 'package:test_flutter/page/all_hotel_view_page.dart';
 import 'package:test_flutter/page/loginpage.dart';
 
 class AdminPage extends StatelessWidget {
@@ -40,10 +41,12 @@ class AdminPage extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton.icon(
               icon: Icon(Icons.hotel),
-              label: Text('Manage Hotels'),
+              label: Text('All Hotels'),
               onPressed: () {
-                // Navigate to manage hotels page or call an API to manage hotels
-                print("Manage Hotels clicked");
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllHotelViewPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
